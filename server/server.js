@@ -1,19 +1,22 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');
+const { connectDB } = require('./config/db');
+const parkingRoutes = require('./routes/parkingRoutes');
+
 const app = express();
-const cors = require("cors");
-const port = process.env.PORT || 3000;
+
+// Connect to Database
+connectDB();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use('/api', parkingRoutes);
 
 // Start server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
